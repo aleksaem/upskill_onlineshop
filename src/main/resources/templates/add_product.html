@@ -8,20 +8,36 @@
     <title>Add Product</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/products">Online Shop</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link" aria-current="page" href="/products">Home</a>
-                <a class="nav-link active" href="/products/add">Add Product</a>
-                <a class="nav-link" style="text-align: right" href="/login">Login</a>
-                <a class="nav-link" style="text-align: right" href="/registration">Registration</a>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <a class="navbar-brand mt-2 mt-lg-0" href="/products">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV_1q-aUBKHUy1iKllneOa2sGmhdwYQn431Q&usqp=CAU"
+                     height="40"
+                     alt="Logo"
+                     loading="lazy"/>
+            </a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/products/add">Add Product</a>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div class="d-flex align-items-center">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/cart">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

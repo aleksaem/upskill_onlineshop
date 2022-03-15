@@ -9,7 +9,9 @@ import java.time.LocalDate;
 @Builder
 public class User {
     private int id;
-    private String login;
+    private String email;
     private String password;
+    private String salt;
+    private String role;
     private LocalDate creationDate;
 }

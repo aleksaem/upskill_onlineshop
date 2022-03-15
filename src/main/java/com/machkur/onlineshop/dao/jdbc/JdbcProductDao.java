@@ -1,10 +1,12 @@
 package com.machkur.onlineshop.dao.jdbc;
 
-import com.machkur.onlineshop.dao.ConnectionFactory;
+import com.machkur.onlineshop.config.ConnectionFactory;
 import com.machkur.onlineshop.dao.ProductDao;
 import com.machkur.onlineshop.dao.mapper.ProductRowMapper;
 import com.machkur.onlineshop.entity.Product;
+import org.postgresql.ds.PGSimpleDataSource;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +18,10 @@ public class JdbcProductDao implements ProductDao {
     private static final String FIND_BY_ID_SQL = "SELECT id, name, price, date FROM products WHERE id = ?;";
     private static final String UPDATE_PRODUCT_SQL = "UPDATE products SET name = ?, price = ?;";
     private static final String DELETE_PRODUCT_SQL = "DELETE FROM products WHERE id = ?;";
-    private final ConnectionFactory connectionFactory;
+    private final DataSource connectionFactory;
     private final static ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
 
-    public JdbcProductDao(ConnectionFactory connectionFactory) {
+    public JdbcProductDao(DataSource connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
 

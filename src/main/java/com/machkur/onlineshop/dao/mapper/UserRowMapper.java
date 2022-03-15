@@ -10,8 +10,10 @@ public class UserRowMapper {
     public User mapRow(ResultSet resultSet) throws SQLException {
         return User.builder()
                 .id(resultSet.getInt("id"))
-                .login(resultSet.getString("login"))
+                .email(resultSet.getString("email"))
                 .password(resultSet.getString("password"))
+                .salt(resultSet.getString("salt"))
+                .role(resultSet.getString("role"))
                 .creationDate(resultSet.getDate("date").toLocalDate())
                 .build();
     }

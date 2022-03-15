@@ -1,23 +1,21 @@
 package com.machkur.onlineshop.dao.jdbc;
 
-import com.machkur.onlineshop.dao.ConnectionFactory;
 import com.machkur.onlineshop.dao.UserDao;
 import com.machkur.onlineshop.dao.mapper.UserRowMapper;
 import com.machkur.onlineshop.entity.User;
 
+import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class JdbcUserDao implements UserDao {
 
-    private static final String ADD_USER_SQL = "INSERT INTO users (login, password, date) VALUES (?, ?, ?);";
-    private static final String FIND_BY_LOGIN_AND_PASSWORD_SQL = "SELECT id, login, password, date FROM users WHERE login = ? AND password = ?;";
-    private static final String FIND_ALL_USERS_SQL = "SELECT id, login, password, date FROM users;";
-    private final ConnectionFactory connectionFactory;
+    private static final String ADD_USER_SQL = "INSERT INTO users (email, password, date, salt) VALUES (?, ?, ?, ?);";
+    private static final String FIND_BY_EMAIL_AND_PASSWORD_SQL = "SELECT id, email, password, salt, role, date FROM users WHERE email = ? AND password = ?;";
+    private static final String FIND_BY_EMAIL_SQL = "SELECT id, email, password, salt, role, date FROM users WHERE email = ?;";
+    private final DataSource connectionFactory;
     private final static UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
 
-    public JdbcUserDao(ConnectionFactory connectionFactory) {
+    public JdbcUserDao(DataSource connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
 
@@ -25,10 +23,11 @@ public class JdbcUserDao implements UserDao {
     public void addUser(User user) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_USER_SQL)) {
-            if (user.getLogin() != null && user.getLogin().length() > 0 && user.getPassword() != null && user.getPassword().length() > 0) {
-                preparedStatement.setString(1, user.getLogin());
+            if (user.getEmail() != null && user.getEmail().length() > 0 && user.getPassword() != null && user.getPassword().length() > 0) {
+                preparedStatement.setString(1, user.getEmail());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setDate(3, Date.valueOf(user.getCreationDate()));
+                preparedStatement.setString(4, user.getSalt());
                 preparedStatement.executeUpdate();
             } else {
                 throw new RuntimeException("Fields login and password cannot be empty");
@@ -39,11 +38,11 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public User findUserByLoginAndPassword(String login, String password) {
+    public User findUserByEmailAndPassword(String email, String password) {
         try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_AND_PASSWORD_SQL)) {
-            if (login != null && login.length() > 0 && password != null && password.length() > 0) {
-                preparedStatement.setString(1, login);
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_EMAIL_AND_PASSWORD_SQL)) {
+            if (email != null && email.length() > 0 && password != null && password.length() > 0) {
+                preparedStatement.setString(1, email);
                 preparedStatement.setString(2, password);
             }
             User user = null;
@@ -53,24 +52,26 @@ public class JdbcUserDao implements UserDao {
             }
             return user;
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot find user with login " + login, e);
+            throw new RuntimeException("Cannot find user with email " + email, e);
         }
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public User findUserByEmail(String email) {
         try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_USERS_SQL);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            List<User> usersList = new ArrayList<>();
-            while (resultSet.next()) {
-                User user = USER_ROW_MAPPER.mapRow(resultSet);
-                usersList.add(user);
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_EMAIL_SQL)) {
+            if (email != null && email.length() > 0) {
+                preparedStatement.setString(1, email);
             }
-
-            return usersList;
+            User user = null;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                user = USER_ROW_MAPPER.mapRow(resultSet);
+            }
+            return user;
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot get users", e);
+            throw new RuntimeException("Cannot find user with email " + email, e);
         }
     }
+
 }

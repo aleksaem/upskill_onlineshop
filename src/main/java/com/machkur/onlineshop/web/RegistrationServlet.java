@@ -3,6 +3,7 @@ package com.machkur.onlineshop.web;
 import com.machkur.onlineshop.entity.User;
 import com.machkur.onlineshop.service.SecurityService;
 import com.machkur.onlineshop.web.utils.PageGenerator;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,10 +11,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
-public class CreateUserServlet extends HttpServlet {
+public class RegistrationServlet extends HttpServlet {
     private final SecurityService securityService;
 
-    public CreateUserServlet(SecurityService securityService) {
+    public RegistrationServlet(SecurityService securityService) {
         this.securityService = securityService;
     }
 
@@ -25,21 +26,22 @@ public class CreateUserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            String login = request.getParameter("login");
+            String email = request.getParameter("email");
             String password = request.getParameter("password");
+            User user = User.builder().email(email).password(password).build();
 
-            User user = User.builder()
-                    .login(login)
-                    .password(password)
-                    .build();
-
-            securityService.createUser(user);
-
-            response.sendRedirect("/login");
+            String token = securityService.register(user);
+            if (token != null) {
+                Cookie cookie = new Cookie("user-token", token);
+                response.addCookie(cookie);
+                response.sendRedirect("/products");
+            } else {
+                throw new IOException();
+            }
         } catch (IOException e) {
-            throw new RuntimeException("Cannot redirect to /login", e);
+            response.sendRedirect("/registration");
         }
     }
 }

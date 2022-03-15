@@ -12,6 +12,9 @@
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <db.url>jdbc:postgresql://ec2-54-171-25-232.eu-west-1.compute.amazonaws.com:5432/ddnu7ufq074mdp</db.url>
+        <db.username>bxpxpfkronrepg</db.username>
+        <db.password>14e6c3551dba6aeb069d285e228454b903fa7f207d05ce13ecf6c303c5ff922e</db.password>
     </properties>
 
     <dependencies>
@@ -69,6 +72,19 @@
     <build>
         <finalName>onlineshop</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>8.5.2</version>
+                <configuration>
+                    <url>${db.url}</url>
+                    <user>${db.username}</user>
+                    <password>${db.password}</password>
+                    <schemas>
+                        <schema>public</schema>
+                    </schemas>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

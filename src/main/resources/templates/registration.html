@@ -8,20 +8,36 @@
     <title>Registration</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">Online Shop</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-                <a class="nav-link" href="/products/add">Add Product</a>
-                <a class="nav-link" style="text-align: right" href="/login">Login</a>
-                <a class="nav-link active" style="text-align: right" href="/registration">Registration</a>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <a class="navbar-brand mt-2 mt-lg-0" href="/products">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV_1q-aUBKHUy1iKllneOa2sGmhdwYQn431Q&usqp=CAU"
+                     height="40"
+                     alt="Logo"
+                     loading="lazy"/>
+            </a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products/add">Add Product</a>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div class="d-flex align-items-center">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/cart">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -36,12 +52,12 @@
                         <div class="mb-md-5 mt-md-4 pb-5">
 
                             <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
-                            <p class="text-white-50 mb-5">Please enter login and password!</p>
+                            <p class="text-white-50 mb-5">Please enter email and password!</p>
                             <form action="/registration" method="post">
                                 <div class="form-outline form-white mb-4">
-                                    <input type="text" id="typeEmailX" name="login" required
+                                    <input type="email" id="typeEmailX" name="email" required
                                            class="form-control form-control-lg"/>
-                                    <label class="form-label" for="typeEmailX">Login</label>
+                                    <label class="form-label" for="typeEmailX">Email</label>
                                 </div>
 
                                 <div class="form-outline form-white mb-4">
