@@ -1,5 +1,6 @@
 package com.machkur.onlineshop.web;
 
+import com.machkur.onlineshop.ServiceLocator;
 import com.machkur.onlineshop.entity.Product;
 import com.machkur.onlineshop.service.ProductService;
 import com.machkur.onlineshop.web.utils.PageGenerator;
@@ -11,11 +12,11 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class AddProductServlet extends HttpServlet {
-    private final ProductService productService;
+    private final ProductService productService = ServiceLocator.get(ProductService.class);
 
-    public AddProductServlet(ProductService productService) {
-        this.productService = productService;
-    }
+//    public AddProductServlet(ProductService productService) {
+//        this.productService = productService;
+//    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

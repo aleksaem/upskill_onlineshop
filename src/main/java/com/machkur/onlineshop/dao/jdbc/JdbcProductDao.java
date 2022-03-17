@@ -16,7 +16,7 @@ public class JdbcProductDao implements ProductDao {
     private static final String FIND_ALL_SQL = "SELECT id, name, price, date FROM products;";
     private static final String INSERT_PRODUCT_SQL = "INSERT INTO products (name, price, date) VALUES (?, ?, ?);";
     private static final String FIND_BY_ID_SQL = "SELECT id, name, price, date FROM products WHERE id = ?;";
-    private static final String UPDATE_PRODUCT_SQL = "UPDATE products SET name = ?, price = ?;";
+    private static final String UPDATE_PRODUCT_SQL = "UPDATE products SET name = ?, price = ? WHERE id = ?;";
     private static final String DELETE_PRODUCT_SQL = "DELETE FROM products WHERE id = ?;";
     private final DataSource connectionFactory;
     private final static ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
@@ -78,6 +78,7 @@ public class JdbcProductDao implements ProductDao {
             if (product != null) {
                 preparedStatement.setString(1, product.getName());
                 preparedStatement.setDouble(2, product.getPrice());
+                preparedStatement.setInt(3, product.getId());
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {

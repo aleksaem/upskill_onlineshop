@@ -1,0 +1,37 @@
+<web-app>
+    <servlet>
+        <servlet-name>findAllProductsServlet</servlet-name>
+        <servlet-class>com.machkur.onlineshop.web.FindAllProductsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>findAllProductsServlet</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addProductServlet</servlet-name>
+        <servlet-class>com.machkur.onlineshop.web.AddProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addProductServlet</servlet-name>
+        <url-pattern>/products/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>editProductServlet</servlet-name>
+        <servlet-class>com.machkur.onlineshop.web.EditProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>editProductServlet</servlet-name>
+        <url-pattern>/products/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteProductServlet</servlet-name>
+        <servlet-class>com.machkur.onlineshop.web.DeleteProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteProductServlet</servlet-name>
+        <url-pattern>/products/delete</url-pattern>
+    </servlet-mapping>
+</web-app>

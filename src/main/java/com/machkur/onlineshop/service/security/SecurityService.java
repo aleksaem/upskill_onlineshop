@@ -37,7 +37,7 @@ public class SecurityService {
     }
 
     public Session login(User user) throws IOException {
-        //checkSessions();
+        checkSessions();
         Session session = null;
         User foundUser = userService.findUserByEmail(user.getEmail());
         if (foundUser != null) {

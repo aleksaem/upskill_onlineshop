@@ -46,6 +46,7 @@
         <h4>Add new product</h4>
         <div class="col-4">
             <form action="/products/edit" method="post">
+                <input type="hidden" name="id" value="${product.id}">
                 <div class="form-floating mb-3">
                     <input type="text" name="name" class="form-control" id="floatingInput" required
                            placeholder="Product name">

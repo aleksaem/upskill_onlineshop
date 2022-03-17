@@ -1,5 +1,6 @@
 package com.machkur.onlineshop.web;
 
+import com.machkur.onlineshop.ServiceLocator;
 import com.machkur.onlineshop.entity.Product;
 import com.machkur.onlineshop.service.ProductService;
 import com.machkur.onlineshop.service.security.entity.Session;
@@ -16,11 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 public class FindAllProductsServlet extends HttpServlet {
-    private final ProductService productService;
+    private final ProductService productService = ServiceLocator.get(ProductService.class);
 
-    public FindAllProductsServlet(ProductService productService) {
-        this.productService = productService;
-    }
+//    public FindAllProductsServlet(ProductService productService) {
+//        this.productService = productService;
+//    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -30,7 +31,7 @@ public class FindAllProductsServlet extends HttpServlet {
 
         Map<String, Object> parametersMap = new HashMap<>();
         parametersMap.put("products", productList);
-        parametersMap.put("userRole", session.getRole());
+      //  parametersMap.put("userRole", session.getRole());
         response.setStatus(HttpServletResponse.SC_OK);
         pageGenerator.writePage(response.getWriter(), "products.html", parametersMap);
     }

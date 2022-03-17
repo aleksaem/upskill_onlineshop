@@ -7,6 +7,7 @@
     <groupId>com.machkur</groupId>
     <artifactId>onlineshop</artifactId>
     <version>1.0</version>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>11</java.version>
@@ -121,6 +122,13 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>11.0.8</version>
+            </plugin>
+
         </plugins>
     </build>
 
