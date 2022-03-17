@@ -5,6 +5,7 @@ import com.machkur.onlineshop.service.ProductService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 public class DeleteProductServlet extends HttpServlet {
@@ -15,7 +16,7 @@ public class DeleteProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             productService.deleteProduct(id);

@@ -1,7 +1,8 @@
 package com.machkur.onlineshop.web;
 
 import com.machkur.onlineshop.entity.User;
-import com.machkur.onlineshop.service.SecurityService;
+import com.machkur.onlineshop.service.security.SecurityService;
+import com.machkur.onlineshop.service.security.entity.Session;
 import com.machkur.onlineshop.web.utils.PageGenerator;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
@@ -32,9 +33,9 @@ public class RegistrationServlet extends HttpServlet {
             String password = request.getParameter("password");
             User user = User.builder().email(email).password(password).build();
 
-            String token = securityService.register(user);
-            if (token != null) {
-                Cookie cookie = new Cookie("user-token", token);
+            Session session = securityService.register(user);
+            if (session != null) {
+                Cookie cookie = new Cookie("user-token", session.getToken());
                 response.addCookie(cookie);
                 response.sendRedirect("/products");
             } else {
