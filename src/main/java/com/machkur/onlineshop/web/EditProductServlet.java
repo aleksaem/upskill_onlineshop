@@ -32,10 +32,12 @@ public class EditProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+            int id = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             double price = Double.parseDouble(request.getParameter("price"));
 
             Product product = Product.builder()
+                    .id(id)
                     .name(name)
                     .price(price)
                     .build();
