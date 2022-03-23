@@ -43,7 +43,7 @@ public class EditProductServlet extends HttpServlet {
                     .build();
 
             productService.editProduct(product);
-            response.sendRedirect("/products");
+            response.sendRedirect("/");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Collections;
 
 public class LoginServlet extends HttpServlet {
     private final SecurityService securityService;
@@ -23,7 +22,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
         response.setStatus(HttpServletResponse.SC_OK);
-        pageGenerator.writePage(response.getWriter(), "login.html", Collections.emptyMap());
+        pageGenerator.writePage(response.getWriter(), "login.html");
     }
 
     @Override
@@ -37,12 +36,17 @@ public class LoginServlet extends HttpServlet {
             if (session != null) {
                 Cookie cookie = new Cookie("user-token", session.getToken());
                 response.addCookie(cookie);
-                response.sendRedirect("/products");
-            } else {
-                throw new IOException();
+                response.sendRedirect("/");
+                return;
             }
+            writeLoginFailed(response);
         } catch (IOException e) {
-            PageGenerator.instance().writePage(response.getWriter(), "login_failed.html", Collections.emptyMap());
+            writeLoginFailed(response);
         }
+    }
+
+    private void writeLoginFailed(HttpServletResponse response) throws IOException {
+        PageGenerator.instance().
+                writePage(response.getWriter(), "login_failed.html");
     }
 }

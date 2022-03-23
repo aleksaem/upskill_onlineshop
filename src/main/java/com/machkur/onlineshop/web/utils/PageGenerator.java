@@ -6,6 +6,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.Map;
 
 public class PageGenerator {
@@ -33,5 +34,9 @@ public class PageGenerator {
         } catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void writePage(PrintWriter writer, String filename){
+        writePage(writer, filename, Collections.emptyMap());
     }
 }

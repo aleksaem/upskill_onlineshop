@@ -21,7 +21,7 @@ public class DeleteProductServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             productService.deleteProduct(id);
 
-            response.sendRedirect("/products");
+            response.sendRedirect("/");
         } catch (IOException e) {
             throw new RuntimeException("Cannot redirect to /products", e);
         }

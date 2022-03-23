@@ -22,7 +22,7 @@ public class DeleteProductFromCartServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
 
             cartService.deleteFromCart(id, session);
-            response.sendRedirect("/products/cart");
+            response.sendRedirect("/cart");
         } catch (IOException e) {
             throw new RuntimeException("Cannot redirect to /products/cart", e);
         }

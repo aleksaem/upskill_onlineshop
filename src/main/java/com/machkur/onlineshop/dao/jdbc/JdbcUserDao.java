@@ -23,7 +23,8 @@ public class JdbcUserDao implements UserDao {
     public void addUser(User user) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_USER_SQL)) {
-            if (user.getEmail() != null && user.getEmail().length() > 0 && user.getPassword() != null && user.getPassword().length() > 0) {
+            if (user.getEmail() != null && user.getEmail().length() > 0 &&
+                    user.getPassword() != null && user.getPassword().length() > 0) {
                 preparedStatement.setString(1, user.getEmail());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setDate(3, Date.valueOf(user.getCreationDate()));
@@ -46,11 +47,12 @@ public class JdbcUserDao implements UserDao {
                 preparedStatement.setString(2, password);
             }
             User user = null;
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                user = USER_ROW_MAPPER.mapRow(resultSet);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = USER_ROW_MAPPER.mapRow(resultSet);
+                }
+                return user;
             }
-            return user;
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find user with email " + email, e);
         }
@@ -64,11 +66,12 @@ public class JdbcUserDao implements UserDao {
                 preparedStatement.setString(1, email);
             }
             User user = null;
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                user = USER_ROW_MAPPER.mapRow(resultSet);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = USER_ROW_MAPPER.mapRow(resultSet);
+                }
+                return user;
             }
-            return user;
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find user with email " + email, e);
         }

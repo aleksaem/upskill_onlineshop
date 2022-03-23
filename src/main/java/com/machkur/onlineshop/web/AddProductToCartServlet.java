@@ -22,7 +22,7 @@ public class AddProductToCartServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
 
             cartService.addToCart(id, session);
-            response.sendRedirect("/products");
+            response.sendRedirect("/");
         } catch (IOException e) {
             throw new RuntimeException("Cannot redirect to /products", e);
         }

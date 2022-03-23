@@ -22,18 +22,18 @@ public class SecurityService {
         this.sessions = new ArrayList<>();
     }
 
-    public Session register(User user) throws IOException {
-        if (userService.findUserByEmail(user.getEmail()) == null) {
-            String salt = generateUUID();
-            user.setSalt(salt);
-            user.setRole(Role.USER.toString());
-            user.setPassword(encode(user.getPassword(), salt));
-            userService.addUser(user);
-            String token = generateToken();
-            return createSession(user, token);
-        } else {
-            return null;
+    public Optional<Session> register(User user) throws IOException {
+        if (userService.findUserByEmail(user.getEmail()) != null) {
+            return Optional.empty();
         }
+        String salt = generateUUID();
+        user.setSalt(salt);
+        user.setRole(Role.USER.toString());
+        user.setPassword(encode(user.getPassword(), salt));
+        userService.addUser(user);
+        String token = generateToken();
+        return Optional.of(createSession(user, token));
+
     }
 
     public Session login(User user) throws IOException {
@@ -41,8 +41,8 @@ public class SecurityService {
         Session session = null;
         User foundUser = userService.findUserByEmail(user.getEmail());
         if (foundUser != null) {
-            String encodedPassword = encode(user.getPassword(), foundUser.getSalt().trim());
-            String currentPassword = foundUser.getPassword().trim();
+            String encodedPassword = encode(user.getPassword(), foundUser.getSalt());
+            String currentPassword = foundUser.getPassword();
             if (currentPassword.equals(encodedPassword)) {
                 String token = generateToken();
                 session = createSession(foundUser, token);
@@ -64,8 +64,9 @@ public class SecurityService {
     }
 
     private Session createSession(User user, String token) {
-        Role userRole = Role.valueOf(user.getRole().trim().toUpperCase());
-        Session session = new Session(token, userRole);
+        Role userRole = Role.valueOf(user.getRole().toUpperCase());
+        LocalDateTime expireDateTime = LocalDateTime.now().plusMinutes(60);
+        Session session = new Session(token, userRole, expireDateTime);
         sessions.add(session);
         return session;
     }

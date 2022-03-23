@@ -10,7 +10,10 @@ import com.machkur.onlineshop.service.ProductService;
 import com.machkur.onlineshop.service.security.SecurityService;
 import com.machkur.onlineshop.service.UserService;
 import com.machkur.onlineshop.web.*;
+import com.machkur.onlineshop.web.security.AdminFilter;
 import com.machkur.onlineshop.web.security.SecurityFilter;
+import com.machkur.onlineshop.web.security.SessionFilter;
+import com.machkur.onlineshop.web.security.UserFilter;
 import jakarta.servlet.DispatcherType;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -54,21 +57,30 @@ public class Starter {
         RegistrationServlet registrationServlet = new RegistrationServlet(securityService);
         LoginServlet loginServlet = new LoginServlet(securityService);
 
-        //filter
-        SecurityFilter securityFilter = new SecurityFilter(securityService);
 
         //mapping
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        contextHandler.addServlet(new ServletHolder(findAllProductsServlet), "/products");
+        contextHandler.addServlet(new ServletHolder(findAllProductsServlet), "/");
         contextHandler.addServlet(new ServletHolder(addProductServlet), "/products/add");
         contextHandler.addServlet(new ServletHolder(deleteProductServlet), "/products/delete");
         contextHandler.addServlet(new ServletHolder(editProductServlet), "/products/edit");
-        contextHandler.addServlet(new ServletHolder(cartServlet), "/products/cart");
-        contextHandler.addServlet(new ServletHolder(addProductToCartServlet), "/products/cart/add");
-        contextHandler.addServlet(new ServletHolder(deleteProductFromCartServlet), "/products/cart/delete");
+        contextHandler.addServlet(new ServletHolder(cartServlet), "/cart");
+        contextHandler.addServlet(new ServletHolder(addProductToCartServlet), "/cart/add");
+        contextHandler.addServlet(new ServletHolder(deleteProductFromCartServlet), "/cart/delete");
         contextHandler.addServlet(new ServletHolder(registrationServlet), "/registration");
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
-        contextHandler.addFilter(new FilterHolder(securityFilter), "/products/*", EnumSet.of(DispatcherType.REQUEST));
+
+
+        //filter
+        AdminFilter adminFilter = new AdminFilter(securityService);
+        UserFilter userFilter = new UserFilter(securityService);
+        SessionFilter sessionFilter = new SessionFilter(securityService);
+
+
+        contextHandler.addFilter(new FilterHolder(adminFilter), "/products/*", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter(new FilterHolder(userFilter), "/cart", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter(new FilterHolder(userFilter), "/cart/*", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter(new FilterHolder(sessionFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(8080);
         server.setHandler(contextHandler);

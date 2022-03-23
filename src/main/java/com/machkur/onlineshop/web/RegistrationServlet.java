@@ -8,9 +8,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 
 public class RegistrationServlet extends HttpServlet {
     private final SecurityService securityService;
@@ -23,7 +25,7 @@ public class RegistrationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PageGenerator pageGenerator = PageGenerator.instance();
         response.setStatus(HttpServletResponse.SC_OK);
-        pageGenerator.writePage(response.getWriter(), "registration.html", Collections.emptyMap());
+        pageGenerator.writePage(response.getWriter(), "registration.html");
     }
 
     @Override
@@ -33,16 +35,25 @@ public class RegistrationServlet extends HttpServlet {
             String password = request.getParameter("password");
             User user = User.builder().email(email).password(password).build();
 
-            Session session = securityService.register(user);
-            if (session != null) {
-                Cookie cookie = new Cookie("user-token", session.getToken());
-                response.addCookie(cookie);
-                response.sendRedirect("/products");
+            Optional<Session> optionalSession = securityService.register(user);
+            if (optionalSession.isPresent()) {
+                addCookieAndRedirect(response, optionalSession.get());
             } else {
-                throw new IOException();
+                redirectToRegistration(response);
             }
         } catch (IOException e) {
-            response.sendRedirect("/registration");
+            redirectToRegistration(response);
         }
+    }
+
+    private void redirectToRegistration(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/registration");
+    }
+
+    @SneakyThrows
+    private void addCookieAndRedirect(HttpServletResponse response, Session session) {
+        Cookie cookie = new Cookie("user-token", session.getToken());
+        response.addCookie(cookie);
+        response.sendRedirect("/");
     }
 }

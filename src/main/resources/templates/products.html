@@ -11,7 +11,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mt-2 mt-lg-0" href="/products">
+            <a class="navbar-brand mt-2 mt-lg-0" href="/">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV_1q-aUBKHUy1iKllneOa2sGmhdwYQn431Q&usqp=CAU"
                      height="40"
                      alt="Logo"
@@ -19,7 +19,7 @@
             </a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/products">Products</a>
+                    <a class="nav-link active" href="/">Products</a>
                 </li>
                 <#if userRole == "ADMIN">
                 <li class="nav-item">
@@ -33,9 +33,9 @@
 
         <div class="d-flex align-items-center">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <#if userRole == "USER" || userRole == "ADMIN">
+                <#if userRole == "USER">
                     <li class="nav-item">
-                        <a class="nav-link" href="/products/cart">Cart</a>
+                        <a class="nav-link" href="/cart">Cart</a>
                     </li>
                 </#if>
                 <li class="nav-item">
@@ -73,8 +73,8 @@
                 <button type="submit" class="btn btn-outline-secondary">Delete</button>
             </form>
             </#if>
-            <#if userRole == "USER" || userRole == "ADMIN">
-            <form id="add_form" style="display: inline-block;" action="/products/cart/add" method="post">
+            <#if userRole == "USER">
+            <form id="add_form" style="display: inline-block;" action="/cart/add" method="post">
                 <input type="hidden" name="id" value="${product.id}">
                 <button type="submit" class="btn btn-outline-secondary">Add to Cart</button>
             </form>
