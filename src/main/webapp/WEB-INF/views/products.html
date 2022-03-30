@@ -64,17 +64,14 @@
         <td style="width: 100%">${product.creationDate}</td>
         <td style="width: 100%">
             <#if userRole == "ADMIN">
-            <form id="edit_form" style="display: inline-block;" action="/products/edit" method="get">
-                <input type="hidden" name="id" value="${product.id}">
-                <button type="submit" class="btn btn-outline-secondary">Edit</button>
-            </form>
-            <form id="delete_form" style="display: inline-block;" action="/products/delete" method="post">
-                <input type="hidden" name="id" value="${product.id}">
+            <a class="btn btn-outline-secondary" href="/products/edit/${product.id}">Edit</a>
+
+            <form id="delete_form" style="display: inline-block;" action="/products/delete/${product.id}" method="POST">
                 <button type="submit" class="btn btn-outline-secondary">Delete</button>
             </form>
             </#if>
             <#if userRole == "USER">
-            <form id="add_form" style="display: inline-block;" action="/cart/add" method="post">
+            <form id="add_form" style="display: inline-block;" action="/cart/add" method="POST">
                 <input type="hidden" name="id" value="${product.id}">
                 <button type="submit" class="btn btn-outline-secondary">Add to Cart</button>
             </form>
@@ -91,9 +88,6 @@
 </body>
 
 <style>
-    #edit_form{
-        position: relative;
-    }
     #delete_form{
         position: relative;
     }

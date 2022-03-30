@@ -1,16 +1,18 @@
 package com.machkur.onlineshop.dao.jdbc;
 
-import com.machkur.onlineshop.config.ConnectionFactory;
 import com.machkur.onlineshop.dao.ProductDao;
 import com.machkur.onlineshop.dao.mapper.ProductRowMapper;
 import com.machkur.onlineshop.entity.Product;
-import org.postgresql.ds.PGSimpleDataSource;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
+@RequiredArgsConstructor
 public class JdbcProductDao implements ProductDao {
 
     private static final String FIND_ALL_SQL = "SELECT id, name, price, date FROM products;";
@@ -18,16 +20,12 @@ public class JdbcProductDao implements ProductDao {
     private static final String FIND_BY_ID_SQL = "SELECT id, name, price, date FROM products WHERE id = ?;";
     private static final String UPDATE_PRODUCT_SQL = "UPDATE products SET name = ?, price = ? WHERE id = ?;";
     private static final String DELETE_PRODUCT_SQL = "DELETE FROM products WHERE id = ?;";
-    private final DataSource connectionFactory;
+    private final DataSource dataSource;
     private final static ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
-
-    public JdbcProductDao(DataSource connectionFactory) {
-        this.connectionFactory = connectionFactory;
-    }
 
     @Override
     public Iterable<Product> findAll() {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             List<Product> productList = new ArrayList<>();
@@ -43,7 +41,7 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public void addProduct(Product product) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PRODUCT_SQL)) {
             if (product.getName() != null && product.getPrice() >= 0.1) {
                 preparedStatement.setString(1, product.getName());
@@ -60,7 +58,7 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public void deleteProduct(int productId) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_SQL)) {
             if (productId > 0) {
                 preparedStatement.setInt(1, productId);
@@ -73,7 +71,7 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public void editProduct(Product product) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUCT_SQL)) {
             if (product != null) {
                 preparedStatement.setString(1, product.getName());
@@ -88,7 +86,7 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public Product findProductById(int productId) {
-        try (Connection connection = connectionFactory.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL)) {
             if (productId > 0) {
                 preparedStatement.setInt(1, productId);

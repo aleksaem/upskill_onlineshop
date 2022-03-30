@@ -5,6 +5,7 @@ import com.machkur.onlineshop.service.UserService;
 import com.machkur.onlineshop.service.security.entity.Role;
 import com.machkur.onlineshop.service.security.entity.Session;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,13 +14,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
 public class SecurityService {
     private final UserService userService;
     private final List<Session> sessions;
 
     public SecurityService(UserService userService) {
         this.userService = userService;
-        this.sessions = new ArrayList<>();
+        this.sessions = Collections.synchronizedList(new ArrayList<>());
     }
 
     public Optional<Session> register(User user) throws IOException {
@@ -37,7 +39,7 @@ public class SecurityService {
     }
 
     public Session login(User user) throws IOException {
-        //checkSessions();
+        checkSessions();
         Session session = null;
         User foundUser = userService.findUserByEmail(user.getEmail());
         if (foundUser != null) {

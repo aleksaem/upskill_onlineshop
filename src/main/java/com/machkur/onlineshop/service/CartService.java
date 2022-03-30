@@ -1,19 +1,16 @@
 package com.machkur.onlineshop.service;
 
 import com.machkur.onlineshop.entity.Product;
-import com.machkur.onlineshop.service.security.SecurityService;
 import com.machkur.onlineshop.service.security.entity.Session;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class CartService {
-    private final SecurityService securityService;
     private final ProductService productService;
-
-    public CartService(SecurityService securityService, ProductService productService) {
-        this.securityService = securityService;
-        this.productService = productService;
-    }
 
     public void addToCart(int productId, Session session){
         Product product = productService.findProductById(productId);

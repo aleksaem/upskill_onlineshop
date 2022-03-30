@@ -7,6 +7,7 @@
     <groupId>com.machkur</groupId>
     <artifactId>onlineshop</artifactId>
     <version>1.0</version>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>11</java.version>
@@ -15,6 +16,7 @@
         <db.url>jdbc:postgresql://ec2-54-171-25-232.eu-west-1.compute.amazonaws.com:5432/ddnu7ufq074mdp</db.url>
         <db.username>bxpxpfkronrepg</db.username>
         <db.password>14e6c3551dba6aeb069d285e228454b903fa7f207d05ce13ecf6c303c5ff922e</db.password>
+        <spring.version>5.3.17</spring.version>
     </properties>
 
     <dependencies>
@@ -25,15 +27,26 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>11.0.7</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
-            <scope>compile</scope>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot</artifactId>
+            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
@@ -46,9 +59,19 @@
             <version>42.3.2</version>
         </dependency>
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.2.11</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>2.0.0-alpha5</version>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.11</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
@@ -121,6 +144,13 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>10.0.8</version>
+            </plugin>
+
         </plugins>
     </build>
 
